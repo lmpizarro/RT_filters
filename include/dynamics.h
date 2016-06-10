@@ -2,6 +2,8 @@
 #define _DYNAMICS_H
 
 #include "defs.h"
+#include "filters.h"
+
 
 typedef struct {
    float fcAttack;

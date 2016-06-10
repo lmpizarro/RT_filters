@@ -51,7 +51,7 @@ void DYN_Filter_Set_Release_Time (DYN_Filter *dyn, const float release_time) {
     dyn->fcRelease = 1.0f / (release_time *2 * PI);
 }
 
-float DYN_Filter_Gain1 (DYN_Filter *dyn, const float gain) {
+float DYN_Filter_Get_Gain1 (DYN_Filter *dyn, const float gain) {
    float rel, att;
   
    att = dyn->attackState;  

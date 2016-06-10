@@ -3,8 +3,10 @@ cmake_minimum_required(VERSION 3.0.2)
 project (filters)
 
 add_executable(main tests/main.c)
+add_executable(test_dyn tests/test_dyn.c)
 
 target_link_libraries(main filters m)
+target_link_libraries(test_dyn dynamics filters m)
 
 set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-fPIC")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
