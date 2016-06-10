@@ -36,16 +36,4 @@ HPF_6db *HPF_6db_C(const float fc, const float sr);
 float HPF_6db_R (HPF_6db *lp, float inp);
 void HPF_6db_D(HPF_6db *lpf);
 
-typedef struct {
-   float fc;
-   float sr;
-   LPF_6db * filter1;
-   LPF_6db * filter2;
-}RMS_Filter;
-
-
-RMS_Filter *RMS_Filter_C(const float fc, const float sr);
-float RMS_Filter_R (RMS_Filter *rms, const float inp);
-void RMS_Filter_D(RMS_Filter *rms);
-
 #endif

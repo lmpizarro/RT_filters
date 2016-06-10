@@ -12,6 +12,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(filters  libs/filters)
 add_library(utils  libs/utils)
 add_library(dynamics  libs/dynamics)
+add_library(rms  libs/rms)
 
 include_directories(include)
 
