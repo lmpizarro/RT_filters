@@ -89,37 +89,36 @@ DYN_Filter *DYN_Filter_C(const float attack_time,
 
    return new;
 }
-/*
-void dynamics_filter_process (dynamics_filter *dyn, const float inpRMS, 
+
+void DYN_Filter_R (DYN_Filter *dyn, const float inpRMS, 
                                const float threshold){
     if (inpRMS >= threshold){
-          dyn->attackState = low_pass_filter_process(dyn->attackFilter, 1.0f); 
-          dyn->releaseState = low_pass_filter_process(dyn->releaseFilter, 0.0f); 
+          dyn->attackState = LPF_6db_R(dyn->attackFilter, 1.0f); 
+          dyn->releaseState = LPF_6db_R(dyn->releaseFilter, 0.0f); 
     }else{
-          dyn->attackState = low_pass_filter_process(dyn->attackFilter, 0.0f); 
-          dyn->releaseState = low_pass_filter_process(dyn->releaseFilter, 1.0f); 
+          dyn->attackState = LPF_6db_R(dyn->attackFilter, 0.0f); 
+          dyn->releaseState = LPF_6db_R(dyn->releaseFilter, 1.0f); 
     }
 }
 
-void dynamics_filter_free(dynamics_filter *dyn){
-  low_pass_filter_free(dyn->attackFilter);
-  low_pass_filter_free(dyn->releaseFilter);
+void DYN_Filter_D(DYN_Filter *dyn){
+  LPF_6db_D(dyn->attackFilter);
+  LPF_6db_D(dyn->releaseFilter);
   free(dyn);
 }
 
-void dynamics_filter_set_attack_time (dynamics_filter *dyn, const float attack_time) {
+void DYN_Filter_Set_Attack_Time (DYN_Filter *dyn, const float attack_time) {
     dyn->fcAttack = 1.0f / (attack_time * 2 * PI);
 }
 
-void dynamics_filter_set_release_time (dynamics_filter *dyn, const float release_time) {
+void DYN_Filter_Set_Release_Time (DYN_Filter *dyn, const float release_time) {
     dyn->fcRelease = 1.0f / (release_time *2 * PI);
 }
 
-float dynamics_filter_gain1 (dynamics_filter *dyn, const float gain) {
+float DYN_Filter_Gain1 (DYN_Filter *dyn, const float gain) {
    float rel, att;
   
    att = dyn->attackState;  
    rel = dyn->releaseState;  
    return ((1.0f- gain)*rel + gain)*((gain - 1.0f)*att + 1.0f);
 }
-*/
