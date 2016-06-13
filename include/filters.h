@@ -78,7 +78,7 @@ typedef struct {
    float b0, b1, b2;
 }BPF_12db;
 
-BPF_12db *BPF_12db_B_C(const float fc, const float damp, const float sr);
+BPF_12db *BPF_12db_C(const float fc, const float damp, const float sr);
 float BPF_12db_R (BPF_12db *lp, float inp);
 void BPF_12db_D(BPF_12db *lpf);
 
