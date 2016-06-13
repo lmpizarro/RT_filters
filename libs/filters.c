@@ -89,25 +89,40 @@ void HPF_6db_D(HPF_6db *hpf){
 /*
  * HPF_12db
  */
-HPF_12db *HPF_12db_C(const float fc, const float damp, const float sr)
+LPF_12db *LPF_12db_C(const float fc, const float Q, const float sr)
 {
-  
-  float Tc;
+  float K, W0, A, B, C, C2, alfa;
 
-  HPF_12db *new = (HPF_12db *)calloc(1, sizeof(HPF_12db));
-  
+  LPF_12db *new = (LPF_12db *)calloc(1, sizeof(LPF_12db));
+
   new->fc = fc;
   new->sr = sr;
-  new->d = damp;
+  new->q = Q;
+  new->warp = 2 * sr * tan(PI * new->fc / new->sr);
+  alfa = 1.0f / Q;
 
-  new->warp = tan(PI * new->fc / new->sr);
-  Tc = tan(PI * new->fc / new->sr);
+  //W0 = 2.0f * PI * fc;
+  W0 = new->warp;
+  A = W0 * W0;
+  B = alfa * W0;
+  K = 1.0f;
+  C = 2.0f * new->sr;
+  C2 = C * C; 
+ 
+  new->a0 = K * A; 
+  new->a1 = 2 * new->a0  ;
+  new->a2 = new->a0;
+  new->b0 = C2 + B*C + A ;
+  new->b1 = 2*A -2*C2 ;
+  new->b2 = C2 - B*C + A;
 
-
-  new->beta = 0.5f * ((1.0f - new->d/(2*sin(Tc)))/(1.0f + new->d/(2*sin(Tc))));
-  new->gamma = (0.5f + new->beta) * cos(Tc);
-  new->alfa = (0.5f +new->beta + new->gamma)/4.0f;
-
+  new->a0 /= new->b0; 
+  new->a1 /= new->b0;
+  new->a2 /= new->b0;
+  new->b1 /= new->b0;
+  new->b2 /= new->b0;
+  new->b0 /= new->b0;
+  
   new->minp = 0.0f;
   new->mout = 0.0f;
   new->mminp = 0.0f;
@@ -117,10 +132,11 @@ HPF_12db *HPF_12db_C(const float fc, const float damp, const float sr)
 }
 
 
-float HPF_12db_R (HPF_12db *lp, float inp){
+float LPF_12db_R (LPF_12db *lp, float inp){
     float out;
 
-    out = 2*(lp->alfa*(inp - 2*lp->minp + lp->mminp) + lp->gamma*lp->mout - lp->beta * lp->mmout) ;
+    out = lp->a0 * inp + lp->a1 * lp->minp + lp->a2 * lp->mminp 
+        - (lp->b1 * lp->mout + lp->b2* lp->mmout) ;
     lp->mmout = lp->mout;
     lp->mminp = lp->minp;
     lp->mout = out;
@@ -128,31 +144,48 @@ float HPF_12db_R (HPF_12db *lp, float inp){
     return out;
 }
 
-void HPF_12db_D(HPF_12db *hpf){
+void LPF_12db_D(LPF_12db *hpf){
   free(hpf);
 }
+
+/*
+* HPF
+*/
 
 HPF_12db_B *HPF_12db_B_C(const float fc, const float Q, const float sr)
 {
   
-  double K, W, DE;
+  float K, W0, A, B, C, C2, alfa;
 
   HPF_12db_B *new = (HPF_12db_B *)calloc(1, sizeof(HPF_12db_B));
   
-  new->fc =(double) fc;
-  new->sr =(double) sr;
-  new->q =(double) Q;
+  new->fc = fc;
+  new->sr = sr;
+  new->q = Q;
+  new->warp = 2 * sr * tan(PI * new->fc / new->sr);
+  alfa = 1.0f / Q;
 
-  K = tan(PI * new->fc / new->sr);
-  new->warp = K;
-  W = K * K;
-  DE = 1 + K/Q + W;
+  //W0 = 2.0f * PI * fc;
+  W0 = new->warp;
+  A = W0 * W0;
+  B = alfa * W0;
+  K = 1.0f;
+  C = 2.0f * new->sr;
+  C2 = C * C; 
+ 
+  new->a0 = K * C2; 
+  new->a1 = -2 * new->a0  ;
+  new->a2 = new->a0;
+  new->b0 = C2 + B*C + A ;
+  new->b1 = 2*A -2*C2 ;
+  new->b2 = C2 - B*C + A;
 
-  new->a1 =  2 * (W - 1) / DE;
-  new->a2 = (1 - K/Q + W) / DE;
-  new->b0 = W / DE;
-  new->b1 = 2 * W / DE;
-  new->b2 = new->b0;
+  new->a0 /= new->b0; 
+  new->a1 /= new->b0;
+  new->a2 /= new->b0;
+  new->b1 /= new->b0;
+  new->b2 /= new->b0;
+  new->b0 /= new->b0;
 
   new->minp = 0.0f;
   new->mout = 0.0f;
@@ -166,8 +199,8 @@ HPF_12db_B *HPF_12db_B_C(const float fc, const float Q, const float sr)
 float HPF_12db_B_R (HPF_12db_B *lp, float inp){
     float out;
 
-    out = lp->b0 * inp + lp->b1 * lp->minp + lp->b2 * lp->mminp 
-        - (lp->a1 * lp->mout + lp->a2* lp->mmout) ;
+    out = lp->a0 * inp + lp->a1 * lp->minp + lp->a2 * lp->mminp 
+        - (lp->b1 * lp->mout + lp->b2* lp->mmout) ;
     lp->mmout = lp->mout;
     lp->mminp = lp->minp;
     lp->mout = out;
@@ -176,5 +209,69 @@ float HPF_12db_B_R (HPF_12db_B *lp, float inp){
 }
 
 void HPF_12db_B_D(HPF_12db_B *hpf){
+  free(hpf);
+}
+
+/*
+* BPF
+*/
+
+BPF_12db *BPF_12db_C(const float fc, const float Q, const float sr)
+{
+  
+  float K, W0, A, B, C, C2, alfa;
+
+  BPF_12db *new = (BPF_12db *)calloc(1, sizeof(BPF_12db));
+  
+  new->fc = fc;
+  new->sr = sr;
+  new->q = Q;
+  new->warp = 2 * sr * tan(PI * new->fc / new->sr);
+  alfa = 1.0f / Q;
+
+  //W0 = 2.0f * PI * fc;
+  W0 = new->warp;
+  A = W0 * W0;
+  B = alfa * W0;
+  K = 1.0f;
+  C = 2.0f * new->sr;
+  C2 = C * C; 
+ 
+  new->a0 = K * B * C; 
+  new->a1 = 0.0f  ;
+  new->a2 = -new->a0;
+  new->b0 = C2 + B*C + A ;
+  new->b1 = 2*A -2*C2 ;
+  new->b2 = C2 - B*C + A;
+
+  new->a0 /= new->b0; 
+  new->a1 /= new->b0;
+  new->a2 /= new->b0;
+  new->b1 /= new->b0;
+  new->b2 /= new->b0;
+  new->b0 /= new->b0;
+
+  new->minp = 0.0f;
+  new->mout = 0.0f;
+  new->mminp = 0.0f;
+  new->mmout = 0.0f;
+
+  return new;
+}
+
+
+float BPF_12db_R (BPF_12db *lp, float inp){
+    float out;
+
+    out = lp->a0 * inp + lp->a1 * lp->minp + lp->a2 * lp->mminp 
+        - (lp->b1 * lp->mout + lp->b2* lp->mmout) ;
+    lp->mmout = lp->mout;
+    lp->mminp = lp->minp;
+    lp->mout = out;
+    lp->minp = inp;
+    return out;
+}
+
+void BPF_12db_D(BPF_12db *hpf){
   free(hpf);
 }

@@ -40,34 +40,46 @@ typedef struct {
    float fc;
    float sr;
    float warp;
-   float d; //damp
+   float q; //q factor
    float minp, mminp;
    float mout, mmout;
-   float alfa;
-   float beta;
-   float gamma;
+   float a0, a1, a2;
+   float b0, b1, b2;
 
-}HPF_12db;
+}LPF_12db;
 
-HPF_12db *HPF_12db_C(const float fc, const float damp, const float sr);
-float HPF_12db_R (HPF_12db *lp, float inp);
-void HPF_12db_D(HPF_12db *lpf);
+LPF_12db *LPF_12db_C(const float fc, const float damp, const float sr);
+float LPF_12db_R (LPF_12db *lp, float inp);
+void LPF_12db_D(LPF_12db *lpf);
 
 typedef struct {
-   double fc;
-   double sr;
-   double warp;
-   double q; //q factor
-   double minp, mminp;
-   double mout, mmout;
-   double a1, a2;
-   double b0, b1, b2;
-
+   float fc;
+   float sr;
+   float warp;
+   float q; //q factor
+   float minp, mminp;
+   float mout, mmout;
+   float a0, a1, a2;
+   float b0, b1, b2;
 }HPF_12db_B;
 
 HPF_12db_B *HPF_12db_B_C(const float fc, const float damp, const float sr);
 float HPF_12db_B_R (HPF_12db_B *lp, float inp);
 void HPF_12db_B_D(HPF_12db_B *lpf);
 
+typedef struct {
+   float fc;
+   float sr;
+   float warp;
+   float q; //q factor
+   float minp, mminp;
+   float mout, mmout;
+   float a0, a1, a2;
+   float b0, b1, b2;
+}BPF_12db;
+
+BPF_12db *BPF_12db_B_C(const float fc, const float damp, const float sr);
+float BPF_12db_R (BPF_12db *lp, float inp);
+void BPF_12db_D(BPF_12db *lpf);
 
 #endif

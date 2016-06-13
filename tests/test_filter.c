@@ -93,15 +93,16 @@ int test_hp12db_filter (){
 
    data = generate_step(N, N/10); 
    
-   fc = 10.0f; damp = 0.5f; 
+   fc = 10000.0f; damp = 0.5f; 
 
    hpf1 =  HPF_12db_B_C(fc, damp, sr);
 
-   printf("%f %f\n", hpf1->a1, hpf1->a2);
+   //printf("a0 %f a1 %fi a2 %f\n", hpf1->a0, hpf1->a1, hpf1->a2);
+   //printf("b0 %f b1 %f b2 %f\n", hpf1->b0, hpf1->b1, hpf1->b2);
    for (i =0; i < N; i ++) {
-    //printf ("%f %f %f ", hpf1->minp, data[i], hpf1->mout);
-    //out = HPF_12db_B_R (hpf1, data[i]);
-    //printf ("%f\n",  out);
+    printf ("%f %f %f ", hpf1->minp, data[i], hpf1->mout);
+    out = HPF_12db_B_R (hpf1, data[i]);
+    printf ("%f\n",  out);
    }
 
 
@@ -109,7 +110,38 @@ int test_hp12db_filter (){
    free(data);
 }
 
+int test_lp12db_filter (){
+   int N, i;
+   float sr, fc, out, damp;
+   float * data;
+   LPF_12db * hpf1;
+
+   N = 44100;
+   sr = 44100.0f;
+
+   data = generate_step(N, N/10); 
+   
+   fc = 10.0f; damp = 0.5f; 
+
+   hpf1 =  LPF_12db_C(fc, damp, sr);
+
+   //printf("a0 %f a1 %fi a2 %f\n", hpf1->a0, hpf1->a1, hpf1->a2);
+   //printf("b0 %f b1 %f b2 %f\n", hpf1->b0, hpf1->b1, hpf1->b2);
+   for (i =0; i < N; i ++) {
+    printf ("%f %f %f ", hpf1->minp, data[i], hpf1->mout);
+    out = LPF_12db_R (hpf1, data[i]);
+    printf ("%f\n",  out);
+   }
+
+
+   LPF_12db_D(hpf1);
+   free(data);
+}
+
+
+
 int main (){
-   test_hp12db_filter();
+   //test_hp12db_filter();
+   test_lp12db_filter();
    return (0);
 }
