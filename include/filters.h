@@ -54,14 +54,14 @@ float HPF_12db_R (HPF_12db *lp, float inp);
 void HPF_12db_D(HPF_12db *lpf);
 
 typedef struct {
-   float fc;
-   float sr;
-   float warp;
-   float q; //q factor
-   float minp, mminp;
-   float mout, mmout;
-   float a1, a2;
-   float b0, b1, b2;
+   double fc;
+   double sr;
+   double warp;
+   double q; //q factor
+   double minp, mminp;
+   double mout, mmout;
+   double a1, a2;
+   double b0, b1, b2;
 
 }HPF_12db_B;
 

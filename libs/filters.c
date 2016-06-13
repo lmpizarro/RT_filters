@@ -135,23 +135,23 @@ void HPF_12db_D(HPF_12db *hpf){
 HPF_12db_B *HPF_12db_B_C(const float fc, const float Q, const float sr)
 {
   
-  float K, W, DE;
+  double K, W, DE;
 
   HPF_12db_B *new = (HPF_12db_B *)calloc(1, sizeof(HPF_12db_B));
   
-  new->fc = fc;
-  new->sr = sr;
-  new->q = Q;
+  new->fc =(double) fc;
+  new->sr =(double) sr;
+  new->q =(double) Q;
 
   K = tan(PI * new->fc / new->sr);
   new->warp = K;
   W = K * K;
   DE = 1 + K/Q + W;
 
-  new->a1 = 2 * (W - 1) / DE;
+  new->a1 =  2 * (W - 1) / DE;
   new->a2 = (1 - K/Q + W) / DE;
-  new->b0 = 1 / DE;
-  new->b1 = -2 * W / DE;
+  new->b0 = W / DE;
+  new->b1 = 2 * W / DE;
   new->b2 = new->b0;
 
   new->minp = 0.0f;

@@ -97,10 +97,11 @@ int test_hp12db_filter (){
 
    hpf1 =  HPF_12db_B_C(fc, damp, sr);
 
+   printf("%f %f\n", hpf1->a1, hpf1->a2);
    for (i =0; i < N; i ++) {
-    printf ("%f %f %f ", hpf1->minp, data[i], hpf1->mout);
-    out = HPF_12db_B_R (hpf1, data[i]);
-    printf ("%f\n",  out);
+    //printf ("%f %f %f ", hpf1->minp, data[i], hpf1->mout);
+    //out = HPF_12db_B_R (hpf1, data[i]);
+    //printf ("%f\n",  out);
    }
 
 
