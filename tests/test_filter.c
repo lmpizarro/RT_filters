@@ -27,7 +27,8 @@ int test_lp_filter (){
    int N, i;
    float sr, fc, out;
    float * data;
-   LPF_6db * lpf;
+   LPF_6db * lpf1;
+   LPF_6db * lpf2;
 
    N = 44100;
    sr = 44100.0f;
@@ -35,17 +36,19 @@ int test_lp_filter (){
    data = generate_step(N, N/10); 
    
    fc = 1.0f; 
-   lpf = LPF_6db_C(fc, sr);
+   lpf1 = LPF_6db_C(fc, sr);
+   lpf2 = LPF_6db_C(fc/1.55, sr);
 
    //printf("%f %f %f\n", lpf->coef1, lpf->coef2, lpf->a);
 
    for (i =0; i < N; i ++) {
-    printf ("%f %f %f ", lpf->minp, data[i], lpf->mout);
-    out = LPF_6db_R (lpf, data[i]);
+    printf ("%f %f %f ", lpf1->minp, data[i], lpf1->mout);
+    out =  LPF_6db_R (lpf2, LPF_6db_R (lpf1, data[i]));
     printf ("%f\n",  out);
    }
 
-   LPF_6db_D(lpf);
+   LPF_6db_D(lpf1);
+   LPF_6db_D(lpf2);
    free(data);
 }
 
@@ -54,7 +57,8 @@ int test_hp_filter (){
    int N, i;
    float sr, fc, out;
    float * data;
-   HPF_6db * hpf;
+   HPF_6db * hpf1;
+   HPF_6db * hpf2;
 
    N = 44100;
    sr = 44100.0f;
@@ -62,22 +66,23 @@ int test_hp_filter (){
    data = generate_step(N, N/10); 
    
    fc = 10.0f; 
-   hpf = HPF_6db_C(fc, sr);
+   hpf1 = HPF_6db_C(fc, sr);
+   hpf2 = HPF_6db_C(fc * 1.55f, sr);
 
-   //printf("%f %f %f\n", lpf->coef1, lpf->coef2, lpf->a);
 
    for (i =0; i < N; i ++) {
-    printf ("%f %f %f ", hpf->minp, data[i], hpf->mout);
-    out = HPF_6db_R (hpf, data[i]);
+    printf ("%f %f %f ", hpf1->minp, data[i], hpf1->mout);
+    out = HPF_6db_R(hpf2, HPF_6db_R (hpf1, data[i]));
     printf ("%f\n",  out);
    }
 
-   HPF_6db_D(hpf);
+   HPF_6db_D(hpf1);
+   HPF_6db_D(hpf2);
    free(data);
 
 }
 
 int main (){
-   test_hp_filter();
+   test_lp_filter();
    return (0);
 }
