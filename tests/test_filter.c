@@ -59,17 +59,25 @@ void Signal_D(Signals *s){
   free(s);
 }
 
-int test_sweep(){
+int test_sweep_lp6(){
   Signals *s;
   float sr = 44100;
   int i;
+  LPF_6db * lpf1;
+  float fc = 40.0f;
+  float out;
 
   s = Signal_Sweep_C(4.0f, sr); 
 
+  lpf1 = LPF_6db_C(fc, sr);
 
-  for (i = 0; i < s->N; i++)
-        fprintf(stdout, "%f\n", s->data[i]);
-
+  for (i = 0; i < s->N; i++){
+     fprintf(stdout, "%f", s->data[i]);
+     out = LPF_6db_R (lpf1, s->data[i]);
+     fprintf(stdout, "  %f\n", out);
+  }
+ 
+  LPF_6db_D(lpf1);
   Signal_D(s);
   return 0;
 }
@@ -189,6 +197,31 @@ int test_lp12db_filter (){
    free(data);
 }
 
+int test_sweep_lp12(){
+  Signals *s;
+  float sr = 44100;
+  int i;
+  LPF_12db * lpf1;
+  float fc = 40.0f;
+  float out, q;
+
+  q = 1.0;
+  s = Signal_Sweep_C(4.0f, sr); 
+
+  lpf1 = LPF_12db_C(fc, q, sr);
+
+  for (i = 0; i < s->N; i++){
+     fprintf(stdout, "%f", s->data[i]);
+     out = LPF_12db_R (lpf1, s->data[i]);
+     fprintf(stdout, "  %f\n", out);
+  }
+
+  LPF_12db_D(lpf1);
+  Signal_D(s);
+  return 0;
+}
+
+
 int test_bp12db_filter (){
    int N, i;
    float sr, fc, out, damp;
@@ -223,6 +256,7 @@ int main (){
    //test_hp12db_filter();
    //test_bp12db_filter();
    //test_lp12db_filter();
-   test_sweep();
+   //test_sweep_lp6();
+   test_sweep_lp12();
    return (0);
 }
