@@ -10,6 +10,7 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fPIC")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(filters  libs/filters)
+add_library(utils  libs/utils)
 
 include_directories(include)
 

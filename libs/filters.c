@@ -169,3 +169,5 @@ float DYN_Filter_Gain1 (DYN_Filter *dyn, const float gain) {
    rel = dyn->releaseState;  
    return ((1.0f- gain)*rel + gain)*((gain - 1.0f)*att + 1.0f);
 }
+
+
