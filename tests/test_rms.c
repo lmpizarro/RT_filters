@@ -35,7 +35,7 @@ int test_rms ()
     tx1 =  pow((sin(2*M_PI*1000*i/sr)),2);
 
     out3 = RMS_Filter_R(rms, tx1);
-    printf ("x1 %f, tx1 %f, out3 %f\n",x1, tx1, out3);
+    printf ("%f  %f  %f\n",x1, tx1, out3);
     y1 = out1;
     x1 = tx1;
    }
