@@ -16,7 +16,7 @@ RMS_Filter *RMS_Filter_C(const float fc, const float sr){
 }
 
 
-float RMS_Filter_process (RMS_Filter *rms, const float inp){
+float RMS_Filter_R (RMS_Filter *rms, const float inp){
   float out1, out2;
 
   out1 = LPF_6db_R(rms->filter1, inp);
