@@ -1,27 +1,9 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 
 #include "t_util.h"
-
-
-float *generate_step(const int N, const int init ){
-
-   float * data;
-   int i;
-
-   data = (float *) calloc(N, sizeof(float));
-
-   for (i = 0; i < init; i++){
-      data[i] = 0.0f;
-   } 
-
-   for (i = init; i < N; i++){
-      data[i] = 1.0f;
-   } 
-
-   return data;
-}
 
 
 
@@ -52,6 +34,31 @@ Signals *Signal_Step_C( const float length, const float init, const float sr){
 
   return new;
 }
+
+Signals *Signal_Sweep_Third_C(float length, float sr){
+  int j, i,  interval;
+  float frec = 15.6250f;
+  float Ts;
+
+  Signals *new = (Signals *)calloc(1, sizeof(Signals));
+  new->length = length;
+  new->N = length * sr;
+  new->sr = sr;
+  new->data  = (float *)calloc(new->N, sizeof(float));
+  Ts = 1.0f / new->sr;
+  interval = (float)new->N/(float)THIRDS_INTERVALS;
+
+  
+  for (i=0; i < THIRDS_INTERVALS; i++){
+   //fprintf(stdout, "% d %d %d -- %f\n", interval * i, interval *(i+1) , i, frec);
+   for(j=interval*i; j<interval*(i+1); j++){
+     new->data[j] = sin(2*PI*frec*j*Ts);
+   } 
+   frec = frec * pow(2.0f, 1.0f/3.0f);
+  }
+  return new;
+}
+
 
 Signals *Signal_Sweep_C(float length, float sr){
 
