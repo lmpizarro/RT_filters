@@ -142,9 +142,11 @@ int test_hp12db_Sweep_filter (){
 
 int test_lp12db_filter (){
    int N, i;
-   float sr, fc, out, damp;
+   float sr, fc, out, damp, K;
    LPF_12db * hpf1;
    Signals * s;
+
+   K = 2.0f;
 
    sr = 44100.0f;
 
@@ -153,7 +155,7 @@ int test_lp12db_filter (){
    
    fc = 10.0f; damp = 0.5f; 
 
-   hpf1 =  LPF_12db_C(fc, damp, sr);
+   hpf1 =  LPF_12db_C(fc, damp, sr, K);
 
    //printf("a0 %f a1 %fi a2 %f\n", hpf1->a0, hpf1->a1, hpf1->a2);
    //printf("b0 %f b1 %f b2 %f\n", hpf1->b0, hpf1->b1, hpf1->b2);
@@ -188,12 +190,13 @@ int test_sweep_lp12(){
   int i;
   LPF_12db * lpf1;
   float fc = 40.0f;
-  float out, q;
+  float out, q, K;
 
   q = 1.0;
   s = Signal_Sweep_C(4.0f, sr); 
 
-  lpf1 = LPF_12db_C(fc, q, sr);
+  K = 2.0;
+  lpf1 = LPF_12db_C(fc, q, sr, K);
 
   for (i = 0; i < s->N; i++){
      fprintf(stdout, "%f", s->data[i]);

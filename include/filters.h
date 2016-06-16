@@ -48,9 +48,29 @@ typedef struct {
 
 }LPF_12db;
 
-LPF_12db *LPF_12db_C(const float fc, const float damp, const float sr);
+LPF_12db *LPF_12db_C(const float fc, const float damp, const float sr, const float K);
 float LPF_12db_R (LPF_12db *lp, float inp);
 void LPF_12db_D(LPF_12db *lpf);
+void LPF_12db_Set_K(LPF_12db *lp, const float K);
+
+typedef struct {
+   float fc;
+   float sr;
+   float warp;
+   float q; //q factor
+   float minp, mminp;
+   float mout, mmout;
+   float a0, a1, a2;
+   float b0, b1, b2;
+
+}LS_Zeros_12db;
+
+LS_Zeros_12db *LS_Zeros_12db_C(const float fc, const float damp, const float sr);
+float LS_Zeros_12db_R (LS_Zeros_12db *lp, float inp);
+void LS_Zeros_12db_D(LS_Zeros_12db *lpf);
+
+
+
 
 typedef struct {
    float fc;
