@@ -48,7 +48,7 @@ typedef struct {
 
 }LPF_12db;
 
-LPF_12db *LPF_12db_C(const float fc, const float damp, const float sr, const float K);
+LPF_12db *LPF_12db_C(const float fc, const float q, const float sr, const float K);
 float LPF_12db_R (LPF_12db *lp, float inp);
 void LPF_12db_D(LPF_12db *lpf);
 void LPF_12db_Set_K(LPF_12db *lp, const float K);
