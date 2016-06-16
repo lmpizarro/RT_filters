@@ -3,7 +3,6 @@
 #include "filters.h"
 #include "shelf_filters.h"
 
-
 Low_Shelf_12db *Low_Shelf_12db_C(const float fmin, const float sr, const float K){
 
 
@@ -14,6 +13,30 @@ Low_Shelf_12db *Low_Shelf_12db_C(const float fmin, const float sr, const float K
   lsz = LS_Zeros_12db_C(2*fmin, 1.41f, sr);
  
   Low_Shelf_12db *new = (Low_Shelf_12db *)calloc(1, sizeof(Low_Shelf_12db));
+
+  new->fc = fmin;
+  new->sr = sr;
+
+
+
+  LS_Zeros_12db_D(lsz); 
+  LPF_12db_D(lpf); 
+
+  return new;
+}
+
+
+
+Low_Shelf_12db_B *Low_Shelf_12db_B_C(const float fmin, const float sr, const float K){
+
+
+  LPF_12db *lpf;
+  LS_Zeros_12db *lsz;  
+
+  lpf = LPF_12db_C(fmin, 1.41f, sr, K);
+  lsz = LS_Zeros_12db_C(2*fmin, 1.41f, sr);
+ 
+  Low_Shelf_12db_B *new = (Low_Shelf_12db_B *)calloc(1, sizeof(Low_Shelf_12db_B));
 
   new->a0 = lpf->a0 * lsz->a0;
   new->a1 = lpf->a0 * lsz->a1 + lpf->a1 * lsz->a0;

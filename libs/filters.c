@@ -193,8 +193,8 @@ LS_Zeros_12db *LS_Zeros_12db_C(const float fc, const float Q, const float sr){
   C2 = C * C; 
  
   new->b0 = A; 
-  new->b1 = 2 * new->a0  ;
-  new->b2 = new->a0;
+  new->b1 = 2 * new->b0  ;
+  new->b2 = new->b0;
   new->a0 = C2 + B*C + A ;
   new->a1 = 2*A -2*C2 ;
   new->a2 = C2 - B*C + A;

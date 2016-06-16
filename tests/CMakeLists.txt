@@ -13,7 +13,7 @@ add_library(t_util  t_util)
 target_link_libraries(main filters m)
 target_link_libraries(test_dyn dynamics filters t_util m)
 target_link_libraries(test_filter filters t_util m)
-target_link_libraries(test_shelf shelf_filters t_util m)
+target_link_libraries(test_shelf shelf_filters filters t_util m)
 target_link_libraries(test_rms rms filters t_util m)
 
 include_directories(../include)

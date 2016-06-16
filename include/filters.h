@@ -69,9 +69,6 @@ LS_Zeros_12db *LS_Zeros_12db_C(const float fc, const float damp, const float sr)
 float LS_Zeros_12db_R (LS_Zeros_12db *lp, float inp);
 void LS_Zeros_12db_D(LS_Zeros_12db *lpf);
 
-
-
-
 typedef struct {
    float fc;
    float sr;
