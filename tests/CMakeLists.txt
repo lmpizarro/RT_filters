@@ -8,7 +8,7 @@ add_executable(test_filter test_filter.c)
 add_executable(test_shelf test_shelf.c)
 add_executable(test_rms test_rms.c)
 
-add_library(t_util  t_util)
+add_library(t_util t_util)
 
 target_link_libraries(main filters m)
 target_link_libraries(test_dyn dynamics filters t_util m)
