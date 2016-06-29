@@ -7,6 +7,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(filters  libs/filters)
 add_library(shelf_filters  libs/shelf_filters)
+add_library(mPreOpAmp  libs/mPreOpAmp)
 
 add_library(utils  libs/utils)
 add_library(dynamics  libs/dynamics)
